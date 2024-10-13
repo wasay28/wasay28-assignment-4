@@ -31,6 +31,17 @@ def search_engine(query):
     """
     # TODO: Implement search engine here
     # return documents, similarities, indices 
+    query_vec = vectorizer.transform([query])
+    query_lsa = lsa.transform(query_vec)
+    
+    cosine_similarities = cosine_similarity(query_lsa, lsa.transform(X)).flatten()
+    top_indices = cosine_similarities.argsort()[-5:][::-1]
+    
+    documents = [newsgroups.data[i] for i in top_indices]
+    similarities = cosine_similarities[top_indices].tolist()
+    indices = top_indices.tolist()
+    
+    return documents, similarities, indices
 
 @app.route('/')
 def index():
