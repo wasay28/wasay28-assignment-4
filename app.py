@@ -16,8 +16,7 @@ app = Flask(__name__)
 categories = ['alt.atheism', 'talk.religion.misc', 'comp.graphics', 'sci.space']
 newsgroups = fetch_20newsgroups(subset='all', categories=categories, remove=('headers', 'footers', 'quotes'))
 
-stop_words = set(stopwords.words('english'))
-vectorizer = TfidfVectorizer(stop_words=stop_words)
+vectorizer = TfidfVectorizer(stop_words='english')
 X = vectorizer.fit_transform(newsgroups.data)
 
 lsa = TruncatedSVD(n_components=100, random_state=42)
