@@ -13,7 +13,15 @@ app = Flask(__name__)
 
 
 # TODO: Fetch dataset, initialize vectorizer and LSA here
+categories = ['alt.atheism', 'talk.religion.misc', 'comp.graphics', 'sci.space']
+newsgroups = fetch_20newsgroups(subset='all', categories=categories, remove=('headers', 'footers', 'quotes'))
 
+stop_words = set(stopwords.words('english'))
+vectorizer = TfidfVectorizer(stop_words=stop_words)
+X = vectorizer.fit_transform(newsgroups.data)
+
+lsa = TruncatedSVD(n_components=100, random_state=42)
+lsa.fit(X)
 
 def search_engine(query):
     """
